@@ -45,7 +45,7 @@
       const router = useRouter() //para configurar a rota e redirecionar meu usuario
       const route = useRoute() //pega os dados da minha rota atual
       const desable = ref(false)
-    //   const token = router.query.token
+      const token = route.query.token
       const { resetPassword } = userAuthUser() //pega o metodo login
   
       const form = ref({
@@ -55,8 +55,7 @@
       const handlePasswordReset = async () => {
         try {
             desable.value = true
-            
-            await resetPassword(form.value.password)
+            await resetPassword(token, form.value.password)
             desable.value = false
             router.push({ name: 'login'})
         } catch (error) {

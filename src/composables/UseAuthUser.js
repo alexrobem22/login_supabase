@@ -6,7 +6,7 @@ const user = ref(null);
 
 export default function useAuthUser() {
   const { supabase } = useSupabase();
-  const {notifySuccess, notifyError} = useNotify();
+  const { notifySuccess, notifyError } = useNotify();
   // fazendo o login
   const login = async ({ email, password }) => {
     try {
@@ -17,11 +17,11 @@ export default function useAuthUser() {
       });
       // const { user, error, status } = await supabase.auth.signInWithOtp({ email: email }) //fazer login so com email
       if (error) throw error;
-      notifySuccess('login success')
+      notifySuccess("login success");
       return user;
     } catch (error) {
       console.error("Erro ao fazer login:", error.message);
-      notifyError(error.message)
+      notifyError(error.message);
       // throw new Error('Ocorreu um erro ao fazer login. Por favor, tente novamente.')
     }
   };
@@ -102,27 +102,31 @@ export default function useAuthUser() {
         email,
         { redirectTo: "http://localhost:9001/reset-password" }
       );
-      notifySuccess('resend email success')
+
       if (error) throw error; //essa linha serve para eu jogar para o CATCH o error
+      notifySuccess("resend email success");
       return user;
     } catch (error) {
       console.error("Erro ao fazer o resete da senha:", error);
-      notifyError(error.message)
+      notifyError(error.message);
       // throw new Error('Ocorreu um erro ao fazer resete. Por favor, tente novamente.')
     }
   };
 
-  const resetPassword = async (new_Password) => {
+  const resetPassword = async (accessToken, new_Password) => {
     try {
-      const { user, error, status } = await supabase.auth.updateUser({
-        password: new_Password,
-      });
+      const { user, error, status } = await supabase.auth.updateUser(
+        accessToken,
+        {
+          password: new_Password,
+        }
+      );
       if (error) throw error;
-      notifySuccess('password accomplished success')
+      notifySuccess("password accomplished success");
       return user;
     } catch (error) {
       console.error("Erro ao fazer o resete da senha:", error);
-      notifyError(error.message)
+      notifyError(error.message);
       // throw new Error('Ocorreu um erro ao fazer resete. Por favor, tente novamente.')
     }
   };
