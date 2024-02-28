@@ -23,10 +23,16 @@ const routes = [
         component: () => import('pages/EmailConfirmation.vue') 
       },
       { 
-        path: 'me', 
-        // alias:['me'],
-        name: 'me', 
-        component: () => import('pages/Me.vue') 
+        path: 'forgot-password', 
+        alias:['forgotpassword'],
+        name: 'forgot-password', 
+        component: () => import('pages/ForgotPassword.vue') 
+      },
+      { 
+        path: 'reset-password', 
+        alias:['resetpassword'],
+        name: 'reset-password', 
+        component: () => import('pages/ResetPassword.vue') 
       }
     ]
   },

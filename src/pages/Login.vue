@@ -17,13 +17,20 @@
           />
         </div>
 
-        <div class="full-width q-pt-md">
+        <div class="full-width q-pt-md q-gutter-y-sm">
           <q-btn
             label="Register"
             color="primary"
             class="full-width"
             flat
             to="/register"
+          />
+          <q-btn
+            label="Forgor Password"
+            color="primary"
+            class="full-width"
+            flat
+            :to="{ name: 'forgot-password'}"
           />
         </div>
       </div>
