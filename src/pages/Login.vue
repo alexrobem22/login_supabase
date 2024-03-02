@@ -2,7 +2,7 @@
   <q-page class="flex flex-center">
     <q-form class="row justify-center" @submit.prevent="handleLogin">
       <p class="col-12 text-h5 text-center">Seja bem vindo!</p>
-      <div class="col-md-4 col-sm-6 col-xs-10 q-gutter-y-md">
+      <div class="col-md-8 col-sm-6 col-xs-10 q-gutter-y-md">
         <q-input 
           label="Email" 
           v-model="form.email" 
@@ -53,7 +53,7 @@
 </template>
   
   <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, onMounted } from "vue";
   import userAuthUser from 'src/composables/UseAuthUser'
   import { useRouter } from 'vue-router';
 
@@ -62,12 +62,17 @@ export default defineComponent({
 
   setup() {
     const router = useRouter() //para configurar a rota
-    const { login } = userAuthUser() //pega o metodo login
+    const { login, isLoggedIn } = userAuthUser() //pega o metodo login
     const form = ref({
       email: '',
       password: '',
     });
 
+    onMounted(() => {
+      if (isLoggedIn) {
+        router.push({ name: 'me'})
+      }
+    })
     const handleLogin = async () => {
         try {
             await login(form.value)

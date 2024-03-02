@@ -54,7 +54,7 @@ export default function useAuthUser() {
 
   // aqui e pra saber se o usuario ta logado
   const isLoggedIn = () => {
-    return !!user.value;
+    return user.value;
   };
 
   // registrar o usuario

@@ -70,7 +70,10 @@ module.exports = configure(function (/* ctx */) {
 
       // publicPath: '/',
       // analyze: true,
-      // env: {},
+      env: {
+        SUPABASE_URL: 'https://uvdqpfjnqygqkwhmdwvo.supabase.co',
+        SUPABASE_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV2ZHFwZmpucXlncWt3aG1kd3ZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDcxNjY0ODUsImV4cCI6MjAyMjc0MjQ4NX0.1U-lpV4peRJnYjboPizCs4Sql6gLBjkoeRYw9KqbIcw'
+      },
       // rawDefine: {}
       // ignorePublicFolder: true,
       // minify: false,
