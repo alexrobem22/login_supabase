@@ -40,15 +40,21 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { 
-        path: 'home', 
-        component: () => import('pages/IndexPage.vue') 
-      },
+      // { 
+      //   path: 'home', 
+      //   component: () => import('pages/IndexPage.vue') 
+      // },
       { 
         path: 'me', 
         // alias:['me'],
         name: 'me', 
         component: () => import('pages/Me.vue') 
+      },
+      { 
+        path: 'category', 
+        alias:['categoria'],
+        name: 'category', 
+        component: () => import('pages/category/List.vue') 
       }
     ],
     meta: {
