@@ -14,7 +14,7 @@
                 />
 
                 <q-btn 
-                    label="Save"
+                    :label="labelSaveOrUpdate"
                     color="primary"
                     class="full-width"
                     rounded
@@ -36,8 +36,8 @@
 </template>
 
 <script>
-import { defineComponent, ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
+import { defineComponent, ref, onMounted, computed } from "vue";
+import { useRouter, useRoute } from "vue-router";
 import useApi from "src/composables/UseApi";
 
 export default defineComponent({
@@ -47,24 +47,49 @@ export default defineComponent({
   setup() {
 
 
-    const { post } = useApi(); //pega o metodo login
+    const { post, getByid, update } = useApi();
+    const route = useRoute() // aqui eu verifico minha rota atual
 
     const table = 'category'
     const load = ref(false)
     const form = ref({
       name: "",
     });
+    let category = {}
 
+    const isUpdate = computed(() => route.params.id)
+
+    onMounted(() => {
+        if(isUpdate.value){
+            handleGetById(isUpdate.value)
+        }
+    })
     const handleSubmit = async () => {
         load.value = true
-        await post(table, form.value)
+        if(isUpdate.value){
+            await update(table, form.value)
+        }else{
+            await post(table, form.value)
+        }
+        
         load.value = false
     }
+
+    const handleGetById = async (id) => {
+        category = await getByid(table, id)
+        form.value = category
+    }
+
+    const labelSaveOrUpdate = computed(() => {
+      return isUpdate.value ? "Update" : "Save";
+    });
 
     return {
         form,
         handleSubmit,
-        load
+        load,
+        handleGetById,
+        labelSaveOrUpdate
     };
   },
 });

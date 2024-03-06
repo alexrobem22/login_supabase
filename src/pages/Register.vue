@@ -65,9 +65,6 @@ export default defineComponent({
       // Lógica para registrar o usuário aqui
       // Você pode acessar os dados do formulário usando 'form.value'
       // Exemplo de como você pode acessar os dados:
-      console.log('Nome:', form.value.name);
-      console.log('Email:', form.value.email);
-      console.log('Senha:', form.value.password);
     };
 
     return {

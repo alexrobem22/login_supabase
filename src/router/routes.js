@@ -57,7 +57,7 @@ const routes = [
         component: () => import('pages/category/List.vue') 
       },
       { 
-        path: 'form-category', 
+        path: 'form-category/:id?', //quando eu boto ? o campo vira opcional
         alias:['form-categoria'],
         name: 'form-category', 
         component: () => import('pages/category/Form.vue') 

@@ -52,7 +52,6 @@
       const handleForgotPassword = async () => {
         try {
             desable.value = true
-            console.log('pegando o form', form.value.email)
           await sendPassowrdRestEmail(form.value.email)
           desable.value = false
         } catch (error) {

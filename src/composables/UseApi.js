@@ -12,7 +12,6 @@ export default function useApi () {
 
     const get = async (table) => {
         try {
-            console.log(table)
             const { data, error } = await supabase
             .from(table)
             .select('*')
@@ -57,14 +56,16 @@ export default function useApi () {
         try {
             const { data, error } = await supabase
             .from(table)
-            .update([
-                ...form
-            ])
-            .math({ id: form.id })
+            .update({ ...form })
+            // .match( {id: form.id } ) // como o profersso fez 
+            .eq( 'id', form.id  ) // na documentação ta assim 
             if (error) throw error;
+            notifySuccess('Saved Update Successfully')
+            router.push({ name: 'category'})
             return data
         } catch (error) {
             console.error("Erro ao fazer update:", error.message);
+            notifyError(error.message)
         }
     }
     const remove = async (table, id) => {
@@ -72,11 +73,13 @@ export default function useApi () {
             const { data, error } = await supabase
             .from(table)
             .delete()
-            .math({ id })
+            .match({ id: id })
             if (error) throw error;
+            notifySuccess('Deleted Successfully')
             return data
         } catch (error) {
             console.error("Erro ao fazer remove:", error.message);
+            notifyError(error.message)
         }
     }
 
