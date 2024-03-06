@@ -55,6 +55,12 @@ const routes = [
         alias:['categoria'],
         name: 'category', 
         component: () => import('pages/category/List.vue') 
+      },
+      { 
+        path: 'form-category', 
+        alias:['form-categoria'],
+        name: 'form-category', 
+        component: () => import('pages/category/Form.vue') 
       }
     ],
     meta: {

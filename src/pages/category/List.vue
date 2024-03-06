@@ -1,5 +1,3 @@
-
-import { QBtn } from 'quasar';
 <template>
   <q-page padding>
     <div class="row" v-if="!loadSkeleton">
@@ -7,7 +5,13 @@ import { QBtn } from 'quasar';
         <template v-slot:top>
           <span class="text-h6">Category</span>
           <q-space />
-          <q-btn color="primary" label="Add New" />
+          <q-btn 
+            icon="add" 
+            color="primary" 
+            label="Add New" 
+            dense
+            :to="{ name:'form-category' }"
+          />
         </template>
         <template v-slot:body-cell-actions="props">
           <q-td :props="props" class="q-gutter-x-sm">

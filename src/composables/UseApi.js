@@ -2,11 +2,13 @@ import { ref } from 'vue';
 import useSupabase from 'src/boot/supabase';
 import useNotify from './UseNotify';
 import UseAuthUser from './UseAuthUser';
+import { useRouter } from "vue-router";
 
 export default function useApi () {
     const { supabase } = useSupabase()
     const { user } = UseAuthUser()
-    const { notifyError } = useNotify()
+    const { notifySuccess, notifyError } = useNotify()
+    const router = useRouter(); //para configurar a rota
 
     const get = async (table) => {
         try {
@@ -42,9 +44,12 @@ export default function useApi () {
                 user_id: user.value.id
             }])
             if (error) throw error;
+            notifySuccess('Saved Successfully')
+            router.push({ name: 'category'})
             return data
         } catch (error) {
-            console.error("Erro ao fazer getByid:", error.message);
+            console.error("Erro ao fazer post:", error.message);
+            notifyError(error.message)
         }
            
     }
@@ -59,7 +64,7 @@ export default function useApi () {
             if (error) throw error;
             return data
         } catch (error) {
-            console.error("Erro ao fazer getByid:", error.message);
+            console.error("Erro ao fazer update:", error.message);
         }
     }
     const remove = async (table, id) => {
@@ -71,7 +76,7 @@ export default function useApi () {
             if (error) throw error;
             return data
         } catch (error) {
-            console.error("Erro ao fazer getByid:", error.message);
+            console.error("Erro ao fazer remove:", error.message);
         }
     }
 
