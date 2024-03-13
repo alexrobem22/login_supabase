@@ -1,9 +1,9 @@
 <template>
   <q-page padding>
     <div class="row" v-if="!loadSkeleton">
-      <q-table :rows="categories" :columns="columns" row-key="id" class="col-12">
+      <q-table :rows="products" :columns="columns" row-key="id" class="col-12">
         <template v-slot:top>
-          <span class="text-h6">Category</span>
+          <span class="text-h6">Product</span>
           <q-space />
           <q-btn 
             v-if="$q.platform.is.desktop"
@@ -11,7 +11,7 @@
             color="primary" 
             label="Add New" 
             dense
-            :to="{ name:'form-category' }"
+            :to="{ name:'form-product' }"
           />
         </template>
         <template v-slot:body-cell-actions="props">
@@ -19,11 +19,26 @@
             <q-btn icon="edit" color="info" dense size="sm" @click="handleEdit(props.row)">
               <q-tooltip> Edit </q-tooltip>
             </q-btn>
-            <q-btn icon="delete" color="negative" dense size="sm" @click="handleDeleteCategory(props.row)">
+            <q-btn icon="delete" color="negative" dense size="sm" @click="handleDeleteProducts(props.row)">
               <q-tooltip> Delete </q-tooltip>
             </q-btn>
           </q-td>
         </template>
+
+        <template v-slot:body-cell-img_url="props">
+          <q-td :props="props">
+            <q-avatar v-if="props.row.img_url">
+              <img :src="props.row.img_url">
+            </q-avatar>
+            <q-avatar 
+              v-else
+              color="grey" 
+              text-color="white" 
+              icon="hide_image" 
+            />
+          </q-td>
+        </template>
+
       </q-table>
     </div>
     <skeleton 
@@ -37,7 +52,7 @@
         fab 
         icon="add" 
         color="primary" 
-        :to="{ name:'form-category' }"
+        :to="{ name:'form-product' }"
       />
     </q-page-sticky>
   </q-page>
@@ -48,12 +63,12 @@ import useApi from "src/composables/UseApi";
 import { useRouter, useRoute } from "vue-router";
 import skeleton from "src/components/Skeleton.vue"
 import { useQuasar } from 'quasar'
-import { columnsCategory } from "./table"
+import { columnsProduct } from "./table"
 
-const columns = columnsCategory
+const columns = columnsProduct
 
 export default defineComponent({
-  name: "PageListCategory",
+  name: "PageListProduct",
   components: {
     skeleton,
   },
@@ -63,21 +78,21 @@ export default defineComponent({
     const { get, remove } = useApi(); //pega o metodo login
     const $q = useQuasar()
 
-    const categories = ref([])
+    const products = ref([])
     const loadSkeleton = ref(true)
-    const table = "category"
+    const table = "product"
 
-    const handleListCategory = async () => {
+    const handleListProducts = async () => {
 
-      categories.value = await get(table)
+      products.value = await get(table)
       loadSkeleton.value = false
     }
 
     const handleEdit = (category) => {
-      router.push({ name: 'form-category', params: { id: category.id}})
+      router.push({ name: 'form-product', params: { id: category.id}})
     }
 
-    const handleDeleteCategory = (category) => {
+    const handleDeleteProducts = (category) => {
       $q.dialog({
         title: 'Confirm',
         message: `Do you really delete ${category.name} ?`,
@@ -92,7 +107,7 @@ export default defineComponent({
         persistent: true
       }).onOk(async () => {
         await remove(table, category.id)
-        handleListCategory()
+        handleListProducts()
       }).onOk(() => {
         // console.log('>>>> second OK catcher')
       }).onCancel(() => {
@@ -104,15 +119,15 @@ export default defineComponent({
     }
 
     onMounted(() => {
-      handleListCategory()
+      handleListProducts()
     });
 
     return {
       columns,
-      categories,
+      products,
       loadSkeleton,
       handleEdit,
-      handleDeleteCategory
+      handleDeleteProducts
     };
   },
 });

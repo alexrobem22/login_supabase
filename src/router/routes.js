@@ -50,6 +50,7 @@ const routes = [
         name: 'me', 
         component: () => import('pages/Me.vue') 
       },
+      //route categoria
       { 
         path: 'category', 
         alias:['categoria'],
@@ -61,6 +62,19 @@ const routes = [
         alias:['form-categoria'],
         name: 'form-category', 
         component: () => import('pages/category/Form.vue') 
+      },
+      //route produtos
+      { 
+        path: 'product', 
+        alias:['produtos'],
+        name: 'product', 
+        component: () => import('pages/product/List.vue') 
+      },
+      { 
+        path: 'form-product/:id?', //quando eu boto ? o campo vira opcional
+        alias:['form-produtos'],
+        name: 'form-product', 
+        component: () => import('pages/product/Form.vue') 
       }
     ],
     meta: {

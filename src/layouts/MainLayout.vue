@@ -70,9 +70,15 @@ const linksList = [
   },
   {
     title: 'Category',
-    caption: 'Pagina inicial',
+    caption: 'Categoria',
     icon: 'category',
     routeName: 'category'
+  },
+  {
+    title: 'Product',
+    caption: 'Produtos',
+    icon: 'inventory_2',
+    routeName: 'product'
   }
 ]
 

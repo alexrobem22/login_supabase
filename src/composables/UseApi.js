@@ -44,7 +44,7 @@ export default function useApi () {
             }])
             if (error) throw error;
             notifySuccess('Saved Successfully')
-            router.push({ name: 'category'})
+            router.push({ name: table})
             return data
         } catch (error) {
             console.error("Erro ao fazer post:", error.message);
@@ -61,7 +61,7 @@ export default function useApi () {
             .eq( 'id', form.id  ) // na documentação ta assim 
             if (error) throw error;
             notifySuccess('Saved Update Successfully')
-            router.push({ name: 'category'})
+            router.push({ name: table})
             return data
         } catch (error) {
             console.error("Erro ao fazer update:", error.message);
