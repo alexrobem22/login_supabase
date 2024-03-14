@@ -1,93 +1,142 @@
-import { ref } from 'vue';
-import useSupabase from 'src/boot/supabase';
-import useNotify from './UseNotify';
-import UseAuthUser from './UseAuthUser';
+import { ref } from "vue";
+import useSupabase from "src/boot/supabase";
+import useNotify from "./UseNotify";
+import UseAuthUser from "./UseAuthUser";
 import { useRouter } from "vue-router";
+import { v4 as uuidv4 } from "uuid";
 
-export default function useApi () {
-    const { supabase } = useSupabase()
-    const { user } = UseAuthUser()
-    const { notifySuccess, notifyError } = useNotify()
-    const router = useRouter(); //para configurar a rota
+export default function useApi() {
+  const { supabase } = useSupabase();
+  const { user } = UseAuthUser();
+  const { notifySuccess, notifyError } = useNotify();
+  const router = useRouter(); //para configurar a rota
 
-    const get = async (table) => {
-        try {
-            const { data, error } = await supabase
-            .from(table)
-            .select('*')
+  const get = async (table) => {
+    try {
+      const { data, error } = await supabase.from(table).select("*");
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error("Erro ao fazer get:", error.message);
+      notifyError(error.message);
+    }
+  };
+  const getByid = async (table, id) => {
+    try {
+      const { data, error } = await supabase
+        .from(table)
+        .select("*")
+        .eq("id", id);
+      if (error) throw error;
+      return data[0];
+    } catch (error) {
+      console.error("Erro ao fazer getByid:", error.message);
+    }
+  };
+  const post = async (table, form) => {
+    try {
+      const { data, error } = await supabase.from(table).insert([
+        {
+          ...form,
+          user_id: user.value.id,
+        },
+      ]);
+      if (error) throw error;
+      notifySuccess("Saved Successfully");
+      router.push({ name: table });
+      return data;
+    } catch (error) {
+      console.error("Erro ao fazer post:", error.message);
+      notifyError(error.message);
+    }
+  };
+  const update = async (table, form) => {
+    try {
+      const { data, error } = await supabase
+        .from(table)
+        .update({ ...form })
+        // .match( {id: form.id } ) // como o profersso fez
+        .eq("id", form.id); // na documentação ta assim
+      if (error) throw error;
+      notifySuccess("Saved Update Successfully");
+      router.push({ name: table });
+      return data;
+    } catch (error) {
+      console.error("Erro ao fazer update:", error.message);
+      notifyError(error.message);
+    }
+  };
+  const remove = async (table, id) => {
+    try {
+      const { data, error } = await supabase
+        .from(table)
+        .delete()
+        .match({ id: id });
+      if (error) throw error;
+      notifySuccess("Deleted Successfully");
+      return data;
+    } catch (error) {
+      console.error("Erro ao fazer remove:", error.message);
+      notifyError(error.message);
+    }
+  };
+    // inserindo o file no bucket   
+  const uploadImg = async (file, storage, form) => {
+    try {
+        const fileName = `img/${uuidv4()}`;
+        const { error } = await supabase.storage
+            .from(storage)
+            .upload(fileName, file, {
+            cacheControl: "3600",
+            upsert: false,
+            });
+        const publicUrl = await getUrlPublic(fileName, storage); // Obtenha a URL pública
+        if (error) throw error;// Verifique se a URL pública foi obtida com sucesso
+        if(form.path_img_url){
+            removeBucket(form.path_img_url, storage)
+        }
+        // Retorna um objeto contendo a URL pública e o nome do arquivo
+        return { publicUrl, fileName};
+    } catch (error) {
+      console.error("Erro ao fazer uploadImg:", error.message);
+      notifyError(error.message);
+    }
+  };
+    // pegando a url no bucket   
+  const getUrlPublic = async (fileName, storage) => {
+    try {
+      const { data, error } = supabase.storage
+        .from(storage)
+        .getPublicUrl(fileName);
+      if (error) throw error;
+      return data.publicUrl;
+    } catch (error) {
+      console.error("Erro ao fazer getUrlPublic:", error.message);
+      notifyError(error.message);
+    }
+  };
+    // removendo a imagem antiga do bucket para nao ficar lixo   
+  const removeBucket = async (fileName, storage) => {
+    try {
+        const { data, error } = await supabase
+            .storage
+            .from(storage)
+            .remove([fileName])
             if (error) throw error;
             return data
-        } catch (error) {
-            console.error("Erro ao fazer get:", error.message);
-            notifyError(error.message)
-        }
-    }
-    const getByid = async (table, id) => {
-        try {
-            const { data, error } = await supabase
-            .from(table)
-            .select('*')
-            .eq('id', id)
-            if (error) throw error;
-            return data[0]
-        } catch (error) {
-            console.error("Erro ao fazer getByid:", error.message);
-        }
-    }
-    const post = async (table, form) => {
-        try {
-            const { data, error } = await supabase
-            .from(table)
-            .insert([{
-                ...form,
-                user_id: user.value.id
-            }])
-            if (error) throw error;
-            notifySuccess('Saved Successfully')
-            router.push({ name: table})
-            return data
-        } catch (error) {
-            console.error("Erro ao fazer post:", error.message);
-            notifyError(error.message)
-        }
-           
-    }
-    const update = async (table, form) => {
-        try {
-            const { data, error } = await supabase
-            .from(table)
-            .update({ ...form })
-            // .match( {id: form.id } ) // como o profersso fez 
-            .eq( 'id', form.id  ) // na documentação ta assim 
-            if (error) throw error;
-            notifySuccess('Saved Update Successfully')
-            router.push({ name: table})
-            return data
-        } catch (error) {
-            console.error("Erro ao fazer update:", error.message);
-            notifyError(error.message)
-        }
-    }
-    const remove = async (table, id) => {
-        try {
-            const { data, error } = await supabase
-            .from(table)
-            .delete()
-            .match({ id: id })
-            if (error) throw error;
-            notifySuccess('Deleted Successfully')
-            return data
-        } catch (error) {
-            console.error("Erro ao fazer remove:", error.message);
-            notifyError(error.message)
-        }
+    } catch (error) {
+        console.error("Erro ao fazer removeBucket:", error.message);
+        notifyError(error.message);
     }
 
-    return{
-        get,
-        getByid,
-        post,
-        update,
-        remove
-    }
+  }
+
+  return {
+    get,
+    getByid,
+    post,
+    update,
+    remove,
+    uploadImg,
+  };
 }

@@ -7,6 +7,15 @@
                 </p>
             </div>
             <div class="col-md-7 col-xs-12 col-sm-12 q-gutter-y-sm">
+                <!-- accept="image/*" -> so aceita image nao aceita .pdf e etc -->
+                <q-input 
+                    label="Image"
+                    stack-label
+                    v-model="img"
+                    type="file"
+                    accept="image/*"
+                />
+
                 <q-input 
                     label="Name"
                     v-model="form.name"
@@ -79,7 +88,7 @@ export default defineComponent({
   setup() {
 
 
-    const { get, post, getByid, update } = useApi();
+    const { get, post, getByid, update, uploadImg } = useApi();
     const route = useRoute() // aqui eu verifico minha rota atual
 
     const table = 'product'
@@ -89,8 +98,12 @@ export default defineComponent({
       description: '',
       amount: 0,
       price: '',
-      category_id: ''
+      category_id: '',
+      img_url: '',
+      path_img_url: ''
     });
+    const img = ref([])
+
     let product = {}
     var optionsCategory = ref([]) // uso o ref([]) pq ele vai ser reativo
 
@@ -104,6 +117,12 @@ export default defineComponent({
     })
     const handleSubmit = async () => {
         load.value = true
+
+        if (img.value.length > 0) {
+            const imgUrl = await uploadImg(img.value[0], 'products', form.value)
+            form.value.img_url = imgUrl.publicUrl
+            form.value.path_img_url = imgUrl.fileName
+        }
         if(isUpdate.value){
             await update(table, form.value)
         }else{
@@ -132,7 +151,8 @@ export default defineComponent({
         load,
         handleGetById,
         labelSaveOrUpdate,
-        optionsCategory
+        optionsCategory,
+        img
     };
   },
 });
