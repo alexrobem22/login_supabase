@@ -4,6 +4,15 @@
       <q-table :rows="products" :columns="columns" row-key="id" class="col-12">
         <template v-slot:top>
           <span class="text-h6">Product</span>
+          <q-btn 
+            label="My Store"
+            dense
+            outiline
+            class="q-ml-sm"
+            icon="store"
+            color="primary"
+            @click="handleGoToStore"
+          />
           <q-space />
           <q-btn 
             v-if="$q.platform.is.desktop"
@@ -64,6 +73,7 @@ import { useRouter, useRoute } from "vue-router";
 import skeleton from "src/components/Skeleton.vue"
 import { useQuasar } from 'quasar'
 import { columnsProduct } from "./table"
+import UseAuthUser from "src/composables/UseAuthUser";
 
 const columns = columnsProduct
 
@@ -81,6 +91,11 @@ export default defineComponent({
     const products = ref([])
     const loadSkeleton = ref(true)
     const table = "product"
+    const { user } = UseAuthUser()
+
+    onMounted(() => {
+      handleListProducts()
+    });
 
     const handleListProducts = async () => {
 
@@ -117,17 +132,21 @@ export default defineComponent({
       })
       
     }
-
-    onMounted(() => {
-      handleListProducts()
-    });
+    const handleGoToStore = () => {
+      const idUser = user.value.id
+      // Resolve a rota com o nome 'product-public' e passa o parâmetro idUser
+      const url = router.resolve({name: 'product-public', params: {id: idUser}}).href
+      // Abre a URL em uma nova aba do navegador
+      window.open(url, '_blank')
+    }
 
     return {
       columns,
       products,
       loadSkeleton,
       handleEdit,
-      handleDeleteProducts
+      handleDeleteProducts,
+      handleGoToStore
     };
   },
 });

@@ -13,7 +13,23 @@ export default function useApi() {
 
   const get = async (table) => {
     try {
-      const { data, error } = await supabase.from(table).select("*");
+      const { data, error } = await supabase
+      .from(table)
+      .select("*")
+      .eq("user_id", user.value.id);
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error("Erro ao fazer get:", error.message);
+      notifyError(error.message);
+    }
+  };
+  const getPublic = async (table, userId) => {
+    try {
+      const { data, error } = await supabase
+      .from(table)
+      .select("*")
+      .eq("user_id", userId);
       if (error) throw error;
       return data;
     } catch (error) {
@@ -133,6 +149,7 @@ export default function useApi() {
 
   return {
     get,
+    getPublic,
     getByid,
     post,
     update,

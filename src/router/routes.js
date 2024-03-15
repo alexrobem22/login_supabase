@@ -33,6 +33,12 @@ const routes = [
         alias:['resetpassword'],
         name: 'reset-password', 
         component: () => import('pages/ResetPassword.vue') 
+      },
+      { 
+        path: 'product-public/:id', //:id? sem a interogação o id se torna obrigatorio
+        alias:['produtos-publico'],
+        name: 'product-public', 
+        component: () => import('pages/product/Public.vue') 
       }
     ]
   },
