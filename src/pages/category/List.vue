@@ -1,6 +1,6 @@
 <template>
   <q-page padding>
-    <div class="row" v-if="!loadSkeleton">
+    <div v-if="!loadSkeleton" class="row" >
       <q-table :rows="categories" :columns="columns" row-key="id" class="col-12">
         <template v-slot:top>
           <span class="text-h6">Category</span>

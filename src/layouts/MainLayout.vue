@@ -17,7 +17,7 @@
 
         <q-btn-dropdown flat color="white" icon="person">
           <q-list>
-            <q-item clickable v-close-popup>
+            <q-item v-close-popup clickable>
               <q-item-section>
                 <q-item-label @click="handleLogout">Logout</q-item-label>
               </q-item-section>

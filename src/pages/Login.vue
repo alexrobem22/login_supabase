@@ -4,14 +4,14 @@
       <p class="col-12 text-h5 text-center">Seja bem vindo!</p>
       <div class="col-md-8 col-sm-6 col-xs-10 q-gutter-y-md">
         <q-input
+          v-model="form.email"  
           label="Email"
-          v-model="form.email"
           lazy-rules
           :rules="[(val) => (val && val.length > 0) || 'Email is required']"
         />
         <q-input
-          label="Password"
           v-model="form.password"
+          label="Password"
           lazy-rules
           :rules="[(val) => (val && val.length > 0) || 'Password is required']"
         />

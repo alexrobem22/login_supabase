@@ -1,5 +1,5 @@
 <template>
-  <div class="row" v-if="load">
+  <div v-if="load" class="row" >
     <q-markup-table class="col-12">
       <thead>
         <tr>
