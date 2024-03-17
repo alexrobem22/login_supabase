@@ -3,7 +3,7 @@
       <q-form class="row justify-center">
         <p class="col-12 text-h5 text-center">Password Reset</p>
         <div class="col-md-4 col-sm-6 col-xs-10 q-gutter-y-md">
-          <q-input label="New Password" v-model="form.password" />
+          <q-input v-model="form.password" label="New Password" />
   
           <div class="full-width q-pt-md q-gutter-y-sm">
             <q-btn
