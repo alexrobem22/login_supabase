@@ -1,6 +1,6 @@
 <template>
     <q-page padding>
-      <div class="row" v-if="!loadSkeleton">
+      <div v-if="!loadSkeleton" class="row" >
         <q-table 
             :rows="products" 
             :columns="columns" 
@@ -13,7 +13,7 @@
                 <span class="text-h6">Product</span>
                 <q-space />
                 <!-- debounce="300" serve para ele demorar um pouco antes de fazer o filter -->
-                <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
+                <q-input v-model="filter" borderless dense debounce="300" placeholder="Search">
                     <template v-slot:append>
                         <q-icon name="search" />
                     </template>
@@ -22,7 +22,8 @@
 
             <template v-slot:item="props">
                 <div class="q-pa-xs col-xs-12 col-sm-6 col-md-4">
-                  <q-card flat bordered>
+                  <!-- v-ripple:primary da um efeito de clike  -->
+                  <q-card v-ripple:primary flat bordered class="cursor-pointer" @click="handleShowDetails(props.row)">
                     <q-img :src="props.row.img_url" :ratio="4/4"/>
                     <q-card-section class="text-center">
                       <div class="text-h6">{{ props.row.name }}</div>
@@ -39,6 +40,11 @@
         :linhas="columns.length"
         :load="loadSkeleton"
       />
+      <dialog-product-details 
+        :show="showDialogDetails"
+        :product="productDetails"
+        @hide-dialog="showDialogDetails = false"
+      />
     </q-page>
   </template>
   <script>
@@ -48,6 +54,7 @@
     //useRoute -> aqui eu pego os dado da rota que eu tou no momento
   import { useRouter, useRoute } from "vue-router";
   import skeleton from "src/components/Skeleton.vue"
+  import DialogProductDetails from "src/components/DialogProductDetails.vue"
   import { columnsProduct } from "./table"
   import { formatCurrency } from 'src/utils/format'
   
@@ -57,6 +64,7 @@
     name: "PageProductPublic",
     components: {
       skeleton,
+      DialogProductDetails
     },
     setup() {
   
@@ -68,7 +76,8 @@
       const loadSkeleton = ref(true)
       const table = "product"
       const filter = ref('')
-
+      const showDialogDetails = ref(false)
+      const productDetails = ref({})
       const handleListProducts = async (userId) => {
         console.log('public', route)
         products.value = await getPublic(table, userId)
@@ -81,13 +90,21 @@
         }
         
       });
+
+      const handleShowDetails = (product) => {
+        productDetails.value = product
+        showDialogDetails.value = true
+      }
   
       return {
         columns,
         products,
         loadSkeleton,
         filter,
-        formatCurrency
+        formatCurrency,
+        showDialogDetails,
+        productDetails,
+        handleShowDetails
       };
     },
   });

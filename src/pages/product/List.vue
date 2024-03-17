@@ -82,7 +82,7 @@ import { defineComponent, ref, onMounted } from "vue";
 import useApi from "src/composables/UseApi";
 import { useRouter, useRoute } from "vue-router";
 import skeleton from "src/components/Skeleton.vue";
-import { useQuasar } from "quasar";
+import { useQuasar, openURL } from "quasar";
 import { columnsProduct } from "./table";
 import UseAuthUser from "src/composables/UseAuthUser";
 
@@ -153,6 +153,8 @@ export default defineComponent({
       }).href;
       // Abre a URL em uma nova aba do navegador
       window.open(url, "_blank");
+      // eu poderia usar o openURL que faz a função do metodo de cima
+      // openURL(url)
     };
 
     return {
