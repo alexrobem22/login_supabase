@@ -8,8 +8,8 @@
             </div>
             <div class="col-md-7 col-xs-12 col-sm-12 q-gutter-y-sm">
                 <q-input 
-                    label="Name"
                     v-model="form.name"
+                    label="Name"
                     :rules="[(val) => (val && val.length >= 3) || 'requires more than 3 characters']"
                 />
 

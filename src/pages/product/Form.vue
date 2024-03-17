@@ -9,16 +9,16 @@
             <div class="col-md-7 col-xs-12 col-sm-12 q-gutter-y-sm">
                 <!-- accept="image/*" -> so aceita image nao aceita .pdf e etc -->
                 <q-input 
+                    v-model="img"
                     label="Image"
                     stack-label
-                    v-model="img"
                     type="file"
                     accept="image/*"
                 />
 
                 <q-input 
-                    label="Name"
                     v-model="form.name"
+                    label="Name"
                     :rules="[(val) => (val && val.length >= 3) || 'requires more than 3 characters']"
                 />
 
@@ -28,15 +28,15 @@
                 />
                 <!-- quando eu boto !!val eu verifico se o valor existe -->
                 <q-input 
-                    label="Amount"
                     v-model="form.amount"
+                    label="Amount"
                     type="number"
                     :rules="[(val) => !!val || 'Amount is Requires']"
                 />
                 
                 <q-input 
-                    label="Price"
                     v-model="form.price"
+                    label="Price"
                     type="number"
                     :rules="[(val) => !!val || 'Amount is Requires']"
                     prefix="R$"
