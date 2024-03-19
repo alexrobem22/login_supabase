@@ -1,5 +1,10 @@
 <template>
     <q-page padding>
+      <div v-if="brand.name" class="row">
+        <div class="col-12 text-center text-h4">
+          {{ brand.name }}
+        </div>
+      </div>
       <div v-if="!loadSkeleton" class="row" >
         <q-table 
             :rows="products" 
@@ -70,7 +75,7 @@
   
       const router = useRouter(); //para configurar a rota
       const route = useRoute() //pega os dados da minha rota atual
-      const { getPublic } = useApi(); //pega o metodo login
+      const { getPublic, brand } = useApi(); //pega o metodo login
   
       const products = ref([])
       const loadSkeleton = ref(true)
@@ -79,7 +84,6 @@
       const showDialogDetails = ref(false)
       const productDetails = ref({})
       const handleListProducts = async (userId) => {
-        console.log('public', route)
         products.value = await getPublic(table, userId)
         loadSkeleton.value = false
       }
@@ -104,7 +108,8 @@
         formatCurrency,
         showDialogDetails,
         productDetails,
-        handleShowDetails
+        handleShowDetails,
+        brand
       };
     },
   });

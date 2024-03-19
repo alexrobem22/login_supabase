@@ -59,9 +59,6 @@ export default function useAuthUser() {
   // registrar o usuario
   const register = async ({ name, email, password, ...meta }) => {
     try {
-      console.log("cheguei", name, email, password);
-      // console.log('supabase', supabase.auth.signUp())
-
       // const { user, error, status } = await supabase.auth.signUp({ email: email, password: password });
       const { user, error, status } = await supabase.auth.signUp(
         { email: email, password: password },

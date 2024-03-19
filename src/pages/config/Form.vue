@@ -18,6 +18,7 @@
                     label="Phone"
                     mask="(##)#####-####"
                     unmasked-value
+                    :rules="[val => !!val || 'Field is required']"
                 />
                 
                 <div class="row justify-center q-gutter-md q-pa-md">

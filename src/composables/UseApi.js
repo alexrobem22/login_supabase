@@ -161,7 +161,7 @@ export default function useApi() {
   }
 
   const getBrand = async () => {
-    const id = user?.value?.id || route.params.id
+    const id = route.params.id || user?.value?.id
     if (id){
       try {
         $q.loading.show()

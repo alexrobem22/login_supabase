@@ -38,10 +38,11 @@
                 />
 
                 <q-btn  
-                    label="BUY ON WHATSAPP" 
-                    color="green-7" 
-                    icon="mdi-whatsapp"
-                    @click="handleSendWpp"
+                  v-if="brand.phone"
+                  label="BUY ON WHATSAPP" 
+                  color="green-7" 
+                  icon="mdi-whatsapp"
+                  @click="handleSendWpp"
                 />
               </q-card-actions>
             </q-card>
@@ -72,12 +73,12 @@ export default defineComponent({
 
     const router = useRouter(); //para configurar a rota
     const route = useRoute() //pega os dados da minha rota atual
-    const { getPublic } = useApi(); //pega o metodo login
+    const { brand } = useApi(); //pega o metodo login
 
     const filter = ref('')
     const $q = useQuasar()
 
-    const phone = '81995311835'
+    const phone = brand.value.phone
     const msg = 'Olá, fiquei interressado no produto'
 
     // aqui vou criar um logica para emit o resultado para o pai
@@ -94,7 +95,8 @@ export default defineComponent({
     return {
         formatCurrency,
         handleClose,
-        handleSendWpp
+        handleSendWpp,
+        brand
     };
   },
 });

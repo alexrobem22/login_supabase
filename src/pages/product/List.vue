@@ -13,6 +13,17 @@
             color="primary"
             @click="handleGoToStore"
           />
+
+          <q-btn
+            label="Copy Link"
+            dense
+            outiline
+            class="q-ml-sm"
+            icon="mdi-content-copy"
+            color="primary"
+            @click="handleCopyPublicUrl"
+          />
+
           <q-space />
           <q-btn
             v-if="$q.platform.is.desktop"
@@ -82,9 +93,10 @@ import { defineComponent, ref, onMounted } from "vue";
 import useApi from "src/composables/UseApi";
 import { useRouter, useRoute } from "vue-router";
 import skeleton from "src/components/Skeleton.vue";
-import { useQuasar, openURL } from "quasar";
+import { useQuasar, openURL, copyToClipboard } from "quasar";
 import { columnsProduct } from "./table";
 import UseAuthUser from "src/composables/UseAuthUser";
+import useNotify from "src/composables/UseNotify";
 
 const columns = columnsProduct;
 
@@ -97,12 +109,13 @@ export default defineComponent({
     const router = useRouter(); //para configurar a rota
     const { get, remove } = useApi(); //pega o metodo login
     const $q = useQuasar();
+    const { notifySuccess, notifyError } = useNotify();
 
     const products = ref([]);
     const loadSkeleton = ref(true);
     const table = "product";
     const { user } = UseAuthUser();
-
+    
     onMounted(() => {
       handleListProducts();
     });
@@ -146,22 +159,37 @@ export default defineComponent({
     };
     const handleGoToStore = () => {
       const idUser = user.value.id;
-      // coloquei dessa forma pq no netifly nao aceita abrir em outra aba
-      router.push({
-        name: "product-public",
-        params: { id: idUser },
-      })
       // Resolve a rota com o nome 'product-public' e passa o parâmetro idUser
         // retirei essa forma pq o netifly nao aceita abrir outra pagina ele se perde no caminho
-      // const url = router.resolve({
-      //   name: "product-public",
-      //   params: { id: idUser },
-      // }).href;
-      // // Abre a URL em uma nova aba do navegador
+      const url = router.resolve({
+        name: "product-public",
+        params: { id: idUser },
+      }).href;
+      // Abre a URL em uma nova aba do navegador
       // window.open(url, "_blank");
       // eu poderia usar o openURL que faz a função do metodo de cima
-      // openURL(url)
+      openURL(window.origin + url)
     };
+
+    const handleCopyPublicUrl = () => {
+      const idUser = user.value.id;
+
+      const url = router.resolve({
+        name: "product-public",
+        params: { id: idUser },
+      }).href;
+
+      const externalLink = window.origin + url
+
+      copyToClipboard(externalLink)
+        .then(() => {
+          notifySuccess('Successfully copied')
+        })
+        .catch(() => {
+          notifyError('Error copied link')
+        })
+
+    }
 
     return {
       columns,
@@ -170,6 +198,7 @@ export default defineComponent({
       handleEdit,
       handleDeleteProducts,
       handleGoToStore,
+      handleCopyPublicUrl
     };
   },
 });

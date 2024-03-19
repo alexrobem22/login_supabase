@@ -119,7 +119,7 @@ export default defineComponent({
       // router.push({ name: 'login'}) //push ele vai inpilhando a rotas
       router.replace({ name: 'login'}) //replace ele zera a rota
     }).onCancel(() => {
-      // console.log('Cancel')
+
     }) 
       
     }
