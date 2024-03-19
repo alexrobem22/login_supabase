@@ -81,6 +81,12 @@ const routes = [
         alias:['form-produtos'],
         name: 'form-product', 
         component: () => import('pages/product/Form.vue') 
+      },
+      { 
+        path: 'form-config/:id?', //quando eu boto ? o campo vira opcional
+        alias:['form-configuracao'],
+        name: 'form-config', 
+        component: () => import('pages/config/Form.vue') 
       }
     ],
     meta: {

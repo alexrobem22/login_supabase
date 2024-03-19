@@ -2,14 +2,25 @@ import { ref } from "vue";
 import useSupabase from "src/boot/supabase";
 import useNotify from "./UseNotify";
 import UseAuthUser from "./UseAuthUser";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { v4 as uuidv4 } from "uuid";
+import useBrand from 'src/composables/UseBrand'
+import { useQuasar } from 'quasar'
 
+const brand = ref({
+  name: "",
+  phone: "",
+  primary: "",
+  secondary: "",
+})
 export default function useApi() {
   const { supabase } = useSupabase();
   const { user } = UseAuthUser();
   const { notifySuccess, notifyError } = useNotify();
-  const router = useRouter(); //para configurar a rota
+  const router = useRouter(); //para direcionar para onde vai
+  const route = useRoute(); //aqui e pegos os paramentros da rota
+  const { setBrand } = useBrand()
+  const $q = useQuasar()
 
   const get = async (table) => {
     try {
@@ -49,8 +60,9 @@ export default function useApi() {
       console.error("Erro ao fazer getByid:", error.message);
     }
   };
-  const post = async (table, form) => {
+  const post = async (table, form, goToroute) => {
     try {
+       var goRoute = goToroute ? goToroute : table
       const { data, error } = await supabase.from(table).insert([
         {
           ...form,
@@ -59,15 +71,16 @@ export default function useApi() {
       ]);
       if (error) throw error;
       notifySuccess("Saved Successfully");
-      router.push({ name: table });
+      router.push({ name: goRoute });
       return data;
     } catch (error) {
       console.error("Erro ao fazer post:", error.message);
       notifyError(error.message);
     }
   };
-  const update = async (table, form) => {
+  const update = async (table, form, goToroute) => {
     try {
+      var goRoute = goToroute ? goToroute : table
       const { data, error } = await supabase
         .from(table)
         .update({ ...form })
@@ -75,7 +88,7 @@ export default function useApi() {
         .eq("id", form.id); // na documentação ta assim
       if (error) throw error;
       notifySuccess("Saved Update Successfully");
-      router.push({ name: table });
+      router.push({ name: goRoute });
       return data;
     } catch (error) {
       console.error("Erro ao fazer update:", error.message);
@@ -147,6 +160,30 @@ export default function useApi() {
 
   }
 
+  const getBrand = async () => {
+    const id = user?.value?.id || route.params.id
+    if (id){
+      try {
+        $q.loading.show()
+        const { data, error } = await supabase
+          .from('config')
+          .select("*")
+          .eq("user_id", id);
+        if (error) throw error;
+
+        if (data.length > 0){
+
+          brand.value = data[0]
+          setBrand(brand.value.primary, brand.value.secondary)
+        }
+        $q.loading.hide()
+        return brand
+      } catch (error) {
+        console.error("Erro ao fazer getBrand:", error.message);
+      }
+    }
+  }
+
   return {
     get,
     getPublic,
@@ -155,5 +192,7 @@ export default function useApi() {
     update,
     remove,
     uploadImg,
+    getBrand,
+    brand
   };
 }

@@ -52,6 +52,7 @@
 import { defineComponent, ref, onMounted } from "vue";
 import userAuthUser from "src/composables/UseAuthUser";
 import { useRouter } from "vue-router";
+import useApi from 'src/composables/UseApi'
 
 export default defineComponent({
   name: "PageLogin",
@@ -63,6 +64,7 @@ export default defineComponent({
       email: "",
       password: "",
     });
+    const { getBrand } = useApi()
 
     onMounted(() => {
       if (isLoggedIn) {
@@ -72,6 +74,7 @@ export default defineComponent({
     const handleLogin = async () => {
       try {
         await login(form.value);
+        await getBrand()
         router.push({ name: "me" });
       } catch (error) {
         console.log("error", error);

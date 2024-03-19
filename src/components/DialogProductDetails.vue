@@ -8,7 +8,7 @@
         >
             <q-card>
               <q-card-section>
-                <div class="text-h6">Detalhes</div>
+                <div class="text-h6">Details</div>
               </q-card-section>
       
               <q-card-section class="q-pt-none">
@@ -38,7 +38,7 @@
                 />
 
                 <q-btn  
-                    label="Fazer Pedido" 
+                    label="BUY ON WHATSAPP" 
                     color="green-7" 
                     icon="mdi-whatsapp"
                     @click="handleSendWpp"

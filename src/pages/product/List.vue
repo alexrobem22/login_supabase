@@ -146,13 +146,19 @@ export default defineComponent({
     };
     const handleGoToStore = () => {
       const idUser = user.value.id;
-      // Resolve a rota com o nome 'product-public' e passa o parâmetro idUser
-      const url = router.resolve({
+      // coloquei dessa forma pq no netifly nao aceita abrir em outra aba
+      router.push({
         name: "product-public",
         params: { id: idUser },
-      }).href;
-      // Abre a URL em uma nova aba do navegador
-      window.open(url, "_blank");
+      })
+      // Resolve a rota com o nome 'product-public' e passa o parâmetro idUser
+        // retirei essa forma pq o netifly nao aceita abrir outra pagina ele se perde no caminho
+      // const url = router.resolve({
+      //   name: "product-public",
+      //   params: { id: idUser },
+      // }).href;
+      // // Abre a URL em uma nova aba do navegador
+      // window.open(url, "_blank");
       // eu poderia usar o openURL que faz a função do metodo de cima
       // openURL(url)
     };
