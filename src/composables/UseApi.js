@@ -35,16 +35,17 @@ export default function useApi() {
       notifyError(error.message);
     }
   };
-  const getPublic = async (table, userId) => {
+  const getPublic = async (table, userId, columnFilter = '', filter = '') => {
     try {
       const { data, error } = await supabase
       .from(table)
       .select("*")
-      .eq("user_id", userId);
+      .eq("user_id", userId)
+      .eq(columnFilter, filter)
       if (error) throw error;
       return data;
     } catch (error) {
-      console.error("Erro ao fazer get:", error.message);
+      console.error("Erro ao fazer getPublic:", error.message);
       notifyError(error.message);
     }
   };
