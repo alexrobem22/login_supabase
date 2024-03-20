@@ -119,10 +119,11 @@ export default defineComponent({
         load.value = true
 
         if (img.value.length > 0) {
-            const imgUrl = await uploadImg(img.value[0], 'products', form.value)
+            const imgUrl = await uploadImg(img.value[0], 'products', form.value, 'img')
             form.value.img_url = imgUrl.publicUrl
             form.value.path_img_url = imgUrl.fileName
         }
+
         if(isUpdate.value){
             await update(table, form.value)
         }else{

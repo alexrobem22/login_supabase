@@ -7,6 +7,15 @@
                 </p>
             </div>
             <div class="col-md-7 col-xs-12 col-sm-12 q-gutter-y-sm">
+
+                <q-input 
+                    v-model="paralax"
+                    label="Image Paralax"
+                    stack-label
+                    type="file"
+                    accept="image/*"
+                />
+
                 <q-input 
                     v-model="form.name"
                     label="Store Name"
@@ -66,7 +75,7 @@ export default defineComponent({
   setup() {
 
 
-    const { post, get, update } = useApi();
+    const { post, get, update, uploadImg } = useApi();
     const route = useRoute() // aqui eu verifico minha rota atual
     const { setBrand } = useBrand()
     const { user } = UserAuthUser()
@@ -78,8 +87,11 @@ export default defineComponent({
       phone: "",
       primary: "",
       secondary: "",
-      user_id: user.id
+      user_id: user.id,
+      img_url_paralax: '',
+      path_img_url_paralax: ''
     });
+    const paralax = ref([])
     var config = {}
 
     const isUpdate = computed(() => route.params.id)
@@ -90,8 +102,13 @@ export default defineComponent({
     const handleSubmit = async () => {
         load.value = true
 
+        if (paralax.value.length > 0) {
+            const imgUrl = await uploadImg(paralax.value[0], 'products', form.value, 'paralax')
+            form.value.img_url_paralax = imgUrl.publicUrl
+            form.value.path_img_url_paralax = imgUrl.fileName
+        }
+
         if(form.value.id){
-            console.log(form.value)
             await update(table, form.value, 'me')
         }else{
             await post(table, form.value, 'me')
@@ -119,6 +136,7 @@ export default defineComponent({
         handleSubmit,
         load,
         labelSaveOrUpdate,
+        paralax
     };
   },
 });

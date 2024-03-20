@@ -48,7 +48,9 @@
             </template>
 
             <template v-slot:item="props">
-                <div class="q-pa-xs col-xs-12 col-sm-6 col-md-4">
+              <!-- col-xs-12 -> pequeno tipo celular / col-sm-6 -> medio tablete e tela pequena / col-md-3 -> tela grande  -->
+              <!-- os numero sao de acordo oque  eu quero quando eles fica em cada tela -->
+                <div class="q-pa-xs col-xs-12 col-sm-3 col-md-3">
                   <!-- v-ripple:primary da um efeito de clike  -->
                   <q-card v-ripple:primary flat bordered class="cursor-pointer" @click="handleShowDetails(props.row)">
                     <q-img :src="props.row.img_url" :ratio="4/4"/>
@@ -58,6 +60,20 @@
                     </q-card-section>
                   </q-card>
                 </div>
+
+                <div v-if="props.rowIndex == 3 && brand.img_url_paralax" class="col-12 q-py-sm">
+                  <q-parallax :height="200" :speed="0.5">
+                    <template v-slot:media>
+                      <img :src="brand.img_url_paralax">
+                    </template>
+                    
+                    <div class="full-width text-center paralaxH3">
+                      <h3 class="text-white">{{ brand.name }}</h3>
+                    </div>
+                    
+                  </q-parallax>
+                </div>
+
             </template>
   
         </q-table>
@@ -159,11 +175,13 @@
         handleListProducts,
         hadleScrollToTop,
         initialPagination,
-        pagesNumber: computed(() => Math.ceil(products.value.length / initialPagination.value.rowPerPage))
+        pagesNumber: computed(() => Math.ceil(products.value.length / initialPagination.value.rowsPerPage))
       };
     },
   });
   </script>
   <style scoped>
-  
+    .paralaxH3 {
+      background-color: rgba(0, 0, 0, 0.404);
+    }
   </style>

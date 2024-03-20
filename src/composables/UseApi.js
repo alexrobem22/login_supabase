@@ -111,25 +111,35 @@ export default function useApi() {
     }
   };
     // inserindo o file no bucket   
-  const uploadImg = async (file, storage, form) => {
+  const uploadImg = async (file, storage, form, imgOrParalax) => {
     try {
-        const fileName = `img/${uuidv4()}`;
+
+        const fileName = imgOrParalax == 'img' ? `img/${uuidv4()}` : `paralax/${uuidv4()}`;
+        const imgParalax = imgOrParalax == 'img' ? form.path_img_url : form.path_img_url_paralax
+        
         const { error } = await supabase.storage
             .from(storage)
             .upload(fileName, file, {
             cacheControl: "3600",
             upsert: false,
             });
+
         const publicUrl = await getUrlPublic(fileName, storage); // Obtenha a URL pública
+        
         if (error) throw error;// Verifique se a URL pública foi obtida com sucesso
-        if(form.path_img_url){
-            removeBucket(form.path_img_url, storage)
+
+        if(imgParalax){
+            removeBucket(imgParalax, storage)
         }
+
         // Retorna um objeto contendo a URL pública e o nome do arquivo
         return { publicUrl, fileName};
+
     } catch (error) {
+
       console.error("Erro ao fazer uploadImg:", error.message);
       notifyError(error.message);
+
     }
   };
     // pegando a url no bucket   
@@ -139,7 +149,9 @@ export default function useApi() {
         .from(storage)
         .getPublicUrl(fileName);
       if (error) throw error;
+
       return data.publicUrl;
+
     } catch (error) {
       console.error("Erro ao fazer getUrlPublic:", error.message);
       notifyError(error.message);
@@ -148,12 +160,15 @@ export default function useApi() {
     // removendo a imagem antiga do bucket para nao ficar lixo   
   const removeBucket = async (fileName, storage) => {
     try {
-        const { data, error } = await supabase
-            .storage
-            .from(storage)
-            .remove([fileName])
-            if (error) throw error;
-            return data
+      const { data, error } = await supabase
+        .storage
+        .from(storage)
+        .remove([fileName])
+
+      if (error) throw error;
+
+      return data
+
     } catch (error) {
         console.error("Erro ao fazer removeBucket:", error.message);
         notifyError(error.message);
