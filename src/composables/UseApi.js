@@ -49,6 +49,22 @@ export default function useApi() {
       notifyError(error.message);
     }
   };
+  const fetchCount = async (table, userId) => {
+    try {
+      const { data, error, count } = await supabase
+      .from(table)
+      .select("*", { count: 'exact'})
+      .eq("user_id", userId)
+      if (error) throw error;
+      return {
+        data,
+        count
+      }
+    } catch (error) {
+      console.error("Erro ao fazer getPublic:", error.message);
+      notifyError(error.message);
+    }
+  };
   const getByid = async (table, id) => {
     try {
       const { data, error } = await supabase
@@ -209,6 +225,7 @@ export default function useApi() {
     remove,
     uploadImg,
     getBrand,
-    brand
+    brand,
+    fetchCount
   };
 }
