@@ -51,7 +51,16 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <!-- enter-active-class="animated fadeInUp slower delay-5s repeat-2"aqui eu configuro como deixa rapido repitir etc -->
+      <router-view v-slot="{ Component }">
+        <transition
+          appear
+          enter-active-class="animated fadeInUp slower"
+          leave-active-class="animated fadeOutDown"
+        >
+          <component :is="Component" />
+        </transition>
+      </router-view>
     </q-page-container>
   </q-layout>
 </template>
