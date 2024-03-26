@@ -98,6 +98,12 @@ const linksList = [
     caption: 'Configuração',
     icon: 'mdi-cog',
     routeName: 'form-config'
+  },
+  {
+    title: 'Config Rifa',
+    caption: 'Configuração',
+    icon: 'mdi-baby',
+    routeName: 'PageFormRifa'
   }
 ]
 

@@ -13,6 +13,7 @@ const brand = ref({
   primary: "",
   secondary: "",
 })
+
 export default function useApi() {
   const { supabase } = useSupabase();
   const { user } = UseAuthUser();

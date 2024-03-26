@@ -1,12 +1,19 @@
+import {routes as RifaBebe} from 'src/modules/rifaBebe/index' 
 
 const routes = [
+  // {
+  //   path: '/',
+  //   name: 'rifaBebe',
+  //   component: () => import('layouts/MainRifaBebe.vue'), // Usando o layout principal
+  //   children: [...RifaBebe]
+  // },
   {
     path: '/',
     component: () => import('layouts/LoginLayout.vue'),
     children: [
       { 
         path: 'login', 
-        alias:['', 'entrar'],
+        alias:['dashboard', 'entrar', ''],
         name: 'login', 
         component: () => import('pages/Login.vue') 
       },
@@ -87,8 +94,22 @@ const routes = [
         alias:['form-configuracao'],
         name: 'form-config', 
         component: () => import('pages/config/Form.vue') 
-      }
+      },
+      { 
+        path: 'form-config/:id?', //quando eu boto ? o campo vira opcional
+        alias:['form-configuracao'],
+        name: 'form-config', 
+        component: () => import('pages/config/Form.vue') 
+      },
     ],
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/',
+    component: () => import('layouts/MainLayout.vue'), // Usando o layout principal
+    children: [...RifaBebe],
     meta: {
       requiresAuth: true
     }
