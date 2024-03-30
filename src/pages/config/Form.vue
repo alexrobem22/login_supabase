@@ -99,6 +99,7 @@ export default defineComponent({
     onMounted(() => {
         handleGetConfig()
     })
+    
     const handleSubmit = async () => {
         load.value = true
 

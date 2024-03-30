@@ -59,7 +59,7 @@ export default defineComponent({
           query: { email: form.value.email }
         })
       } catch (error) {
-        console.log('handleRegister',error)
+
         alert(error.message)
       }
       // Lógica para registrar o usuário aqui

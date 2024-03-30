@@ -56,7 +56,7 @@
           desable.value = false
         } catch (error) {
             desable.value = false
-          console.log('handleRegister',error)
+
           alert(error.message)
         }
       };

@@ -22,7 +22,6 @@ export default defineComponent({
     const darkMode = ref(false);
 
     watch(darkMode, (darkMode) => {
-        console.log('oi', darkMode)
         // set status
         $q.dark.set(darkMode) // or false or "auto"
         $q.localStorage.set('darkMode', darkMode)

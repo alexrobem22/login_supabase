@@ -77,7 +77,7 @@ export default defineComponent({
         await getBrand()
         router.push({ name: "me" });
       } catch (error) {
-        console.log("error", error);
+
         alert(error.message);
       }
     };

@@ -60,7 +60,7 @@
             router.push({ name: 'login'})
         } catch (error) {
             desable.value = false
-            console.log('handleRegister',error)
+
             alert(error.message)
         }
       };

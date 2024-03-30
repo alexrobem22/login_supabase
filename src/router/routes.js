@@ -114,6 +114,17 @@ const routes = [
       requiresAuth: true
     }
   },
+  { 
+    path: '/', 
+    component: () => import('layouts/MainRifaBebe.vue'), 
+    children: [
+      {
+        path: '/rifa-bebe/:id?',
+        name: 'PageRifaBebe',
+        component: () => import('src/modules/rifaBebe/views/PublicRifaBebe.vue'), // Usando o layout principal
+      },
+    ]
+  },
 
   // Always leave this as last one,
   // but you can also remove it
