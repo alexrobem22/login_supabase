@@ -1,4 +1,6 @@
 import {routes as RifaBebe} from 'src/modules/rifaBebe/index' 
+import {routes as Futebol} from 'src/modules/futebol/index' 
+import {routes as ConfigUser} from 'src/modules/configUser/index' 
 
 const routes = [
   // {
@@ -110,6 +112,22 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'), // Usando o layout principal
     children: [...RifaBebe],
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [...Futebol], // Adicionando as rotas do módulo FutebolQuarta
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [...ConfigUser], // Adicionando as rotas do módulo FutebolQuarta
     meta: {
       requiresAuth: true
     }

@@ -72,8 +72,8 @@ module.exports = configure(function (/* ctx */) {
       // publicPath: '/',
       // analyze: true,
       env: {
-        SUPABASE_URL: 'https://uvdqpfjnqygqkwhmdwvo.supabase.co',
-        SUPABASE_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV2ZHFwZmpucXlncWt3aG1kd3ZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDcxNjY0ODUsImV4cCI6MjAyMjc0MjQ4NX0.1U-lpV4peRJnYjboPizCs4Sql6gLBjkoeRYw9KqbIcw'
+        SUPABASE_URL: 'https://ymkxmpjhyjbiyjairskv.supabase.co',
+        SUPABASE_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlta3htcGpoeWpiaXlqYWlyc2t2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzcxMTc5NTUsImV4cCI6MjA1MjY5Mzk1NX0.QhjthzMaxUzXaNNfp5uSDNYVxJNo9h32Ixy4OyTiWiw'
       },
       // rawDefine: {}
       // ignorePublicFolder: true,

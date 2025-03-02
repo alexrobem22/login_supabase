@@ -217,6 +217,49 @@ export default function useApi() {
     }
   }
 
+  const getAllProfiles = async (email = null) => {
+     try {
+
+       let query = supabase.from('profiles').select('*');
+
+        if (email){
+          query = query.eq('email', email);
+        } 
+        
+        const { data, error } = await query;
+
+      if (error) {
+        throw error; // Lançar o erro caso exista
+      }
+
+      return email ? data[0] : data; // Retornando o usuário
+    } catch (error) {
+      console.error('Erro ao obter o getAllProfiles:', error);
+      return null;
+    }
+
+  }
+  const postProfiles = async (form) => {
+     try {
+
+      const { data, error } = await supabase.from('profiles').insert([
+        {
+          ...form,
+          user_id: user.value.id,
+        },
+      ]);
+
+      if (error) {
+        throw error; // Lançar o erro caso exista
+      }
+
+      return data; // Retornando o usuário
+    } catch (error) {
+      console.error('Erro ao inserir o postProfiles:', error);
+    }
+
+  }
+
   return {
     get,
     getPublic,
@@ -227,6 +270,8 @@ export default function useApi() {
     uploadImg,
     getBrand,
     brand,
-    fetchCount
+    fetchCount,
+    getAllProfiles,
+    postProfiles,
   };
 }

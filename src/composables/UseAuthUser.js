@@ -61,14 +61,30 @@ export default function useAuthUser() {
     try {
       // const { user, error, status } = await supabase.auth.signUp({ email: email, password: password });
       const { user, error, status } = await supabase.auth.signUp(
-        { email: email, password: password },
+        { 
+          email: email, 
+          password: password,
+          options: {
+            data: {
+              first_name: name,
+            }
+          }
+        },
         {
-          data: meta,
+          // data: meta,
           redirectTo: `${window.location.origin}/me?fromEmail=registrationConfirmation`,
         }
       );
+
       if (error) throw error;
-      return user;
+      const form = {
+        email: email,
+        name: name,
+      }
+
+      await insertProfiles(form)
+
+      // return user;
     } catch (error) {
       console.error("Erro ao fazer register:", error);
       throw new Error(
@@ -76,6 +92,26 @@ export default function useAuthUser() {
       );
     }
   };
+
+  const insertProfiles = async (form) => {
+     try {
+
+      const { data, error } = await supabase.from('profiles').insert([
+        {
+          ...form,
+        },
+      ]);
+
+      if (error) {
+        throw error; // Lançar o erro caso exista
+      }
+
+      return data; // Retornando o usuário
+    } catch (error) {
+      console.error('Erro ao inserir o postProfiles:', error);
+    }
+
+  }
 
   // fazer update
   const update = async (data) => {
