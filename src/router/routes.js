@@ -143,6 +143,17 @@ const routes = [
       },
     ]
   },
+  { 
+    path: '/', 
+    component: () => import('layouts/PublicLayout.vue'), 
+    children: [
+      {
+        path: '/futebol/:time',
+        name: 'PageJogadores',
+        component: () => import('src/modules/futebol/views/PagePublicPlayers.vue'), // Usando o layout principal
+      },
+    ]
+  },
 
   // Always leave this as last one,
   // but you can also remove it

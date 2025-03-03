@@ -13,7 +13,7 @@ export default function ApiFutebol() {
     const route = useRoute(); //aqui e pegos os paramentros da rota
     const $q = useQuasar()
 
-    const update = async (table, form) => {
+    const updatePlayers = async (table, form) => {
         try {
             // Enviando tudo de uma vez para o banco
             const { data, error } = await supabase
@@ -23,6 +23,7 @@ export default function ApiFutebol() {
 
             if (error) throw error;
             notifySuccess("Saved Update Successfully"); 
+
             return data;
         } catch (error) {
             console.error("Erro ao fazer update:", error.message);
@@ -30,8 +31,32 @@ export default function ApiFutebol() {
         }
     };
 
+    const getPlayers = async (timesArray = null) => {
+        try {
+
+            let query = supabase.from('players').select('*');
+
+            if (timesArray){
+                query = query.in('time', timesArray);
+            } 
+            
+            const { data, error } = await query;
+
+            if (error) {
+                throw error; // Lançar o erro caso exista
+            }
+
+            return data; 
+        } catch (error) {
+        console.error('Erro ao obter o getPlayers:', error);
+        return null;
+        }
+
+    }
+
     return {
-        update
+        updatePlayers,
+        getPlayers
     }
 
 }
